@@ -11,15 +11,14 @@ public class BoundaryEmmenager {
 
 	public void emmenager(String nomVisiteur) {
 		if (controlEmmenager.isHabitant(nomVisiteur)) {
-			System.out.println(
-					"Mais vous êtes déjà un habitant du village !");
+			System.out.println("Mais vous êtes déjà un habitant du village !");
 		} else {
 			StringBuilder question = new StringBuilder();
-			question.append("Êtes-vous :\n");
-			question.append("1 - un druide.\n");
-			question.append("2 - un gaulois.\n");
 			int choixUtilisateur = -1;
 			do {
+				question.append("Êtes-vous :\n");
+				question.append("1 - un druide.\n");
+				question.append("2 - un gaulois.\n");
 				choixUtilisateur = Clavier.entrerEntier(question.toString());
 				switch (choixUtilisateur) {
 				case 1:
@@ -27,13 +26,13 @@ public class BoundaryEmmenager {
 					break;
 
 				case 2:
-				    int force = Clavier.entrerEntier("Bienvenue villageois " + nomVisiteur + ". Quelle est votre force?");
-				    controlEmmenager.ajouterGaulois(nomVisiteur, force);
+					int force = Clavier
+							.entrerEntier("Bienvenue villageois " + nomVisiteur + ". Quelle est votre force?");
+					controlEmmenager.ajouterGaulois(nomVisiteur, force);
 					break;
 
 				default:
-					System.out
-							.println("Vous devez choisir le chiffre 1 ou 2 !");
+					System.out.println("Vous devez choisir le chiffre 1 ou 2 !");
 					break;
 				}
 			} while (choixUtilisateur != 1 && choixUtilisateur != 2);
@@ -41,13 +40,19 @@ public class BoundaryEmmenager {
 	}
 
 	private void emmenagerDruide(String nomVisiteur) {
-	    int force = Clavier.entrerEntier("Bienvenue druide " + nomVisiteur + ". Quel est votre force?");
-	    
-	    int effetPotionMin = Clavier.entrerEntier("Quel est l'effet minimum de votre potion?");
-	    
-	    int effetPotionMax = Clavier.entrerEntier("Quel est l'effet maximum de votre potion?");
-	    
-	    controlEmmenager.ajouterDruide(nomVisiteur, force, effetPotionMin, effetPotionMax);
+		int effetPotionMin;
+		int effetPotionMax;
+		int force = Clavier.entrerEntier("Bienvenue druide " + nomVisiteur + ". Quel est votre force?");
+		do {
+			effetPotionMin = Clavier.entrerEntier("Quelle est la force de potion la plus faible que vous produisez ?");
+
+			effetPotionMax = Clavier.entrerEntier("Quelle est la force de potion la plus forte que vous produisez ?");
+
+			if (effetPotionMax < effetPotionMin) {
+				System.out.println("Attention Druide, vous vous êtes trompé entre le minimum et le maximum.");
+			}
+		} while (effetPotionMin < effetPotionMax);
+		controlEmmenager.ajouterDruide(nomVisiteur, force, effetPotionMin, effetPotionMax);
 	}
 
 }
